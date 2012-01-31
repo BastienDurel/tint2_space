@@ -9,38 +9,42 @@ function tint2_space() {
 
 tint2_space.prototype = {
     _init : function() {
-        this.actor = new St.BoxLayout({ style_class: 'bottom-panel',
-                                        name: 'bottomPanel',
-                                        reactive: true });
-        this.actor._delegate = this;
-
 	let m = Main.layoutManager.monitors.length;
-
-        Main.layoutManager.addChrome(this.actor, { affectsStruts: true });
-
-        this.actor.connect('style-changed', Lang.bind(this, this.relayout));
+	this.actors = new Array(m);
+	for (var i = 0; i < m; i++) {
+	    this._configOne(i);
+	}
         global.screen.connect('monitors-changed', Lang.bind(this,
                                                      this.relayout));
     },
 
     relayout: function() {
-        let primary = Main.layoutManager.primaryMonitor;
+	global.log("relayout ...");
+	for (var i = 0; i < this.actors.length; i++) {
+	    global.log("relayout: " + i);
+            let monitor = Main.layoutManager.monitors[i];
+	    global.log("relayout -> " + monitor);
 
-        let h = 31;
-        this.actor.set_position(primary.x, primary.y+primary.height-h);
-        this.actor.set_size(1, 32);
+            let h = 31;
+            this.actors[i].set_position(monitor.x, monitor.y+monitor.height-h);
+            this.actors[i].set_size(100, 32);
+	}
     },
 
     _configOne: function(i) {
+	global.log("_configOne: " + i);
 	this.actors[i] = new St.BoxLayout({ style_class: 'bottom-panel',
-                                        name: 'bottomPanel',
+                                        name: 'bottomPanel' + i,
                                         reactive: true });
 	this.actors[i]._delegate = this;
 	Main.layoutManager.addChrome(this.actors[i], { affectsStruts: true });
 	
         this.actors[i].connect('style-changed', Lang.bind(this, this.relayout));
-        global.screen.connect('monitors-changed', Lang.bind(this,
-                                                     this.relayout));
+    },
+
+    deconfigure: function() {
+	for (var i = 0; i < this.actors.length; i++) 
+	    Main.layoutManager.removeChrome(tint2space.actors[i]);
     }
 };
 
@@ -50,7 +54,7 @@ function init(extensionMeta) {
 }
 
 function enable() {
-    Main.wm._reset();
+    //Main.wm._reset();
 
     tint2space = new tint2_space();
     tint2space.relayout();
@@ -58,10 +62,10 @@ function enable() {
 
 function disable() {
 
-    Main.wm._reset();
+    //Main.wm._reset();
 
     if ( tint2space ) {
-        Main.layoutManager.removeChrome(tint2space.actor);
+        tint2space.deconfigure();
         tint2space = null;
     }
 }
