@@ -19,11 +19,11 @@ tint2_space.prototype = {
     },
 
     relayout: function() {
-	global.log("relayout ...");
+	//global.log("relayout ...");
 	for (var i = 0; i < this.actors.length; i++) {
-	    global.log("relayout: " + i);
+	    //global.log("relayout: " + i);
             let monitor = Main.layoutManager.monitors[i];
-	    global.log("relayout -> " + monitor);
+	    //global.log("relayout -> " + monitor);
 
             let h = 31;
             this.actors[i].set_position(monitor.x, monitor.y+monitor.height-h);
@@ -32,7 +32,7 @@ tint2_space.prototype = {
     },
 
     _configOne: function(i) {
-	global.log("_configOne: " + i);
+	//global.log("_configOne: " + i);
 	this.actors[i] = new St.BoxLayout({ style_class: 'bottom-panel',
                                         name: 'bottomPanel' + i,
                                         reactive: true });
