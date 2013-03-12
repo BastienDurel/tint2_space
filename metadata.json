@@ -1,2 +1,2 @@
-{"shell-version": ["3.2"], "uuid": "tint2_space@geekwu.org", "name": "Tint2 space", "description": "Add space for tint2 to the shell", "url": "http://www.geekwu.org" }
+{"shell-version": ["3.2", "3.4", "3.6"], "uuid": "tint2_space@geekwu.org", "name": "Tint2 space", "description": "Add space for tint2 to the shell", "url": "http://www.geekwu.org" }
 
